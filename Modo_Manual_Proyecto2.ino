@@ -1,32 +1,32 @@
+// PROYECTO #2 ELECTRONICA DIGITAL
+// JAVIER MEDINA - 22124 & MIGUEL DONIS - 22993
+
 #include <Servo.h>
 
-Servo servo1, servo2, servo3, servo4;
+// Pines de servos y joysticks
+const byte pinesServo[] = {7, 6, 5, 4};
+const byte pinesJoy[]   = {A0, A1, A2, A3};
 
-const int pot1 = A0, pot2 = A1, pot3 = A2, pot4 = A3;
-const int ledManual = 8;  // Esta led indica que se encuentra en el modo manual
+// Pines de LED y botones
+const byte LED_MANUAL   = 8;
+const byte BTN_MODO     = 9;
+const byte BTN_SIGUIENTE= 10;
+const byte BTN_ANTERIOR = 11;
 
+// Arreglo de 4 servos
+Servo servos[4];
 
-void setup() {
-  Serial.begin(9600);
-  servo1.attach(7);
-  servo2.attach(6);
-  servo3.attach(5);
-  servo4.attach(4);
-  
-  pinMode(ledManual, OUTPUT);
-  digitalWrite(ledManual, HIGH);
-}
+// Variables de control
+bool modoManual = true;
+bool moviendo = false;
+byte poseActual = 0;
 
-void loop() {
-  int posicion1 = map(analogRead(pot1), 0, 1023, 0, 180);
-  int posicion2 = map(analogRead(pot2), 0, 1023, 0, 180);
-  int posicion3 = map(analogRead(pot3), 0, 1023, 0, 180);
-  int posicion4 = map(analogRead(pot4), 0, 1023, 0, 180);
-
-  servo1.write(posicion1);
-  servo2.write(posicion2);
-  servo3.write(posicion3);
-  servo4.write(posicion4);
-
-  delay(100);
-}
+// Lista de poses automáticas (ángulos para los 4 servos)
+const byte NUM_POSES = 5;
+const int poses[NUM_POSES][4] = {
+  {  0,  45,  90,  45},
+  { 45,  90,  45,  90},
+  { 90, 135,  90, 135},
+  {135,  90, 135,  90},
+  {180,  45,  90,  45}
+};
